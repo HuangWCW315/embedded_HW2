@@ -1,5 +1,4 @@
 #include <mbed.h>
-#include <iostream>
 BusOut display(D6, D7, D9, D10, D11, D5, D4, D8);
 char table[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F};
 
@@ -28,7 +27,6 @@ int main()
     int frequency = 0;
     clock_t t1;
     clock_t t2;
-    bool flag = true;
     
     t1 = clock();
 
@@ -51,9 +49,7 @@ int main()
 
         t2 = clock();
         time = (double)(t2 - t1) / CLOCKS_PER_SEC;
-
-
-        
+      
         wait(period);
     } 
     Greenled = 1;
@@ -66,12 +62,13 @@ int main()
     Greenled = 0;
     Redled = 1;
 
-    double n = 0;
     while (true)
     {
-        Aout = (sin(M_PI*n) * 0.5) + 0.5;     // sample signal
-        n += period;
-        if (n >= sample)    n = 0;
+        for (float n = 0; n < 2; n += 0.05)
+        {
+            Aout = sin(3.14159 * n) * 0.5 + 0.5;     // sample signal
+            wait((float)0.025 / true_f);
+        }
         if (SW == 0)        // switch on
         {
 
@@ -84,7 +81,6 @@ int main()
             Greenled = 0;
             Redled = 1;
         }
-        wait(period);
     }
 }
 
